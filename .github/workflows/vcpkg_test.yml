@@ -7,7 +7,7 @@ on:
         required: true
       X_VCPKG_NUGET_ID_PREFIX:
         description: The vcpkg NuGet package id prefix.
-        required: true
+        required: false
         default: ""
 
 env:
