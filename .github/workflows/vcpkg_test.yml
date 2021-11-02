@@ -45,10 +45,9 @@ jobs:
         run: ./vcpkg_latest/bootstrap-vcpkg.sh
 
       - name: vcpkg install ${{ github.event.inputs.vcpkg-packages }}
-        if: matrix.os == 'windows-latest'
         shell: bash
         run: |
-          "${{ github.workspace }}/vcpkg_latest/vcpkg" install ${{ github.event.inputs.vcpkg-packages }}
+          "${{ github.workspace }}/vcpkg_latest/vcpkg" install ${{ github.event.inputs.vcpkg-packages }} --debug
         env:
           X_VCPKG_NUGET_ID_PREFIX: ${{ github.event.inputs.X_VCPKG_NUGET_ID_PREFIX }}
 
