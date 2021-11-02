@@ -6,9 +6,9 @@ on:
         description: Packages to install with vcpkg.
         required: true
       X_VCPKG_NUGET_ID_PREFIX:
-        description: The vcpkg NuGet package id prefix.
+        description: X_VCPKG_NUGET_ID_PREFIX
         required: false
-        default: ""
+        default: "my-cool-repo"
 
 env:
   VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
