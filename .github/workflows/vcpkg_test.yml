@@ -12,7 +12,7 @@ on:
 
 env:
   VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
-  VCPKG_FEATURE_FLAGS: manifests,binarycaching
+  VCPKG_FEATURE_FLAGS: binarycaching
 
 jobs:
   update:
