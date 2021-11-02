@@ -47,7 +47,7 @@ jobs:
       - name: vcpkg install ${{ github.event.inputs.vcpkg-packages }}
         shell: bash
         run: |
-          "${{ github.workspace }}/vcpkg_latest/vcpkg" install ${{ github.event.inputs.vcpkg-packages }} --debug
+          ./vcpkg_latest/vcpkg install ${{ github.event.inputs.vcpkg-packages }} --debug
         env:
           X_VCPKG_NUGET_ID_PREFIX: ${{ github.event.inputs.X_VCPKG_NUGET_ID_PREFIX }}
 
