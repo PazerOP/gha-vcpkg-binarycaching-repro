@@ -1,0 +1,53 @@
+name: registry-update-workflow
+on:
+  workflow_dispatch:
+    inputs:
+      vcpkg-packages:
+        description: Packages to install with vcpkg.
+        required: true
+      X_VCPKG_NUGET_ID_PREFIX:
+        description: The vcpkg NuGet package id prefix.
+        required: true
+        default: ""
+
+env:
+  VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
+  VCPKG_FEATURE_FLAGS: manifests,binarycaching
+
+jobs:
+  update:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup NuGet Credentials
+        shell: bash
+        run: >
+          nuget sources add
+          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          -storepasswordincleartext
+          -name "GitHub"
+          -username "${{ github.repository_owner }}"
+          -password "${{ github.token }}"
+
+      - run: git clone https://github.com/microsoft/vcpkg.git vcpkg_latest
+
+      - name: Bootstrap vcpkg (Windows)
+        if: matrix.os == windows-latest
+        run: vcpkg_latest/bootstrap-vcpkg.bat
+      - name: Bootstrap vcpkg (Linux)
+        if: matrix.os == ubuntu-latest
+        run: ./vcpkg_latest/bootstrap-vcpkg.sh
+
+      - name: vcpkg install ${{ github.event.inputs.vcpkg-packages }}
+        run: |
+          "${{ github.workspace }}/vcpkg_latest/vcpkg" install ${{ github.event.inputs.vcpkg-packages }}
+        env:
+          X_VCPKG_NUGET_ID_PREFIX: ${{ github.event.inputs.X_VCPKG_NUGET_ID_PREFIX }}
+
+
